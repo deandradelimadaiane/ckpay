@@ -1,28 +1,24 @@
-
 [build]
   command = "npm install --legacy-peer-deps && npm run build"
   publish = "dist"
-  environment = { NODE_VERSION = "18" }
+  environment = { 
+    NODE_VERSION = "18.17.0",
+    NPM_VERSION = "9.6.7",
+    SECRETS_SCAN_ENABLED = "false"
+  }
 
-[build.environment]
-  NODE_VERSION = "18.17.0"
-  NPM_VERSION = "9.6.7"
-  SECRETS_SCAN_ENABLED = "false" # Apenas para emergências!
-  
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
   force = true
 
-# Important: This redirects for ALL assets properly
 [[redirects]]
   from = "/assets/*"
   to = "/assets/:splat"
   status = 200
   force = false
 
-# This fallback is important for SPA routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -38,13 +34,11 @@
     X-XSS-Protection = "1; mode=block"
     Cache-Control = "public, max-age=31536000"
 
-# Configuração específica para recursos de API
 [[headers]]
   for = "/api/*"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
-# Configuração para arquivos estáticos com longa duração de cache
 [[headers]]
   for = "*.js"
   [headers.values]
@@ -71,7 +65,6 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000"
 
-# Ensure JavaScript files are served with proper content type
 [[headers]]
   for = "/assets/*.js"
   [headers.values]
